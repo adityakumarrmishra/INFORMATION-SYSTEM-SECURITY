@@ -1,0 +1,51 @@
+Open In Colab
+
+def vigenere_encrypt(text, key):
+    encrypted_text = ""
+    key = key.upper()
+    key_length = len(key)
+
+    for i, char in enumerate(text):
+        if char.isalpha():
+            shift = ord(key[i % key_length]) - ord('A')
+            if char.isupper():
+                encrypted_text += chr((ord(char) - ord('A') + shift) % 26 + ord('A'))
+            else:
+                encrypted_text += chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+        else:
+            encrypted_text += char
+
+    return encrypted_text
+
+def vigenere_decrypt(cipher_text, key):
+    decrypted_text = ""
+    key = key.upper()
+    key_length = len(key)
+
+    for i, char in enumerate(cipher_text):
+        if char.isalpha():
+            shift = ord(key[i % key_length]) - ord('A')
+            if char.isupper():
+                decrypted_text += chr((ord(char) - ord('A') - shift) % 26 + ord('A'))
+            else:
+                decrypted_text += chr((ord(char) - ord('a') - shift) % 26 + ord('a'))
+        else:
+            decrypted_text += char
+
+    return decrypted_text
+
+if _name_ == "_main_":
+    text = input("Enter the text: ")
+    key = input("Enter the key: ")
+
+    encrypted_text = vigenere_encrypt(text, key)
+    print("Encrypted Text:", encrypted_text)
+
+    decrypted_text = vigenere_decrypt(encrypted_text, key)
+    print("Decrypted Text:", decrypted_text)
+
+     
+Enter the text: JAIPUR CITY
+Enter the key: KEY
+Encrypted Text: TEGZYP GGDC
+Decrypted Text: JAIPUR CITY
