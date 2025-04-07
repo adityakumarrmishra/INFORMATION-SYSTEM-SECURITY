@@ -1,0 +1,47 @@
+Open In Colab
+
+def xor(a, b):
+    """Perform XOR operation on two binary strings."""
+    return ''.join(str(int(x) ^ int(y)) for x, y in zip(a, b))
+
+def f_function(right, key):
+    """Simple Feistel function: XOR right half with key."""
+    return xor(right, key)
+
+def des_encrypt(plaintext, key, rounds=4):
+    """Encrypt using a simplified Feistel network (4 rounds)."""
+    left, right = plaintext[:4], plaintext[4:]
+
+    for _ in range(rounds):
+        new_left = right
+        new_right = xor(left, f_function(right, key))
+        left, right = new_left, new_right
+
+    return left + right
+
+def des_decrypt(ciphertext, key, rounds=4):
+    """Decrypt using the same Feistel structure (reversed rounds)."""
+    left, right = ciphertext[:4], ciphertext[4:]
+
+    for _ in range(rounds):
+        new_right = left
+        new_left = xor(right, f_function(left, key))
+        left, right = new_left, new_right
+
+    return left + right
+
+# Example Usage
+plaintext = "10101010"  # 8-bit binary input
+key = "11001100"        # 8-bit binary key
+
+encrypted_text = des_encrypt(plaintext, key)
+decrypted_text = des_decrypt(encrypted_text, key)
+
+print("Plaintext:  ", plaintext)
+print("Encrypted:  ", encrypted_text)
+print("Decrypted:  ", decrypted_text)
+
+     
+Plaintext:   10101010
+Encrypted:   10101100
+Decrypted:   10101010
